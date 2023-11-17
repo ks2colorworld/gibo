@@ -459,10 +459,18 @@
           e.target.innerHTML = whiteCount;
           arr[e.target.dataset.id] = ['w',whiteCount]
         } else {
-          e.target.classList.add('b')
-          blackCount += 1;
-          e.target.innerHTML = blackCount;
-          arr[e.target.dataset.id] = ['b',blackCount]
+          // 흑돌이 놓인 후 백돌 놓여짐
+          if (whiteCount < blackCount) {
+            e.target.classList.add('w')
+            whiteCount += 1;
+            e.target.innerHTML = whiteCount;
+            arr[e.target.dataset.id] = ['w',whiteCount]
+          }else{
+            e.target.classList.add('b')
+            blackCount += 1;
+            e.target.innerHTML = blackCount;
+            arr[e.target.dataset.id] = ['b',blackCount]
+          }
         }
 
         //save to url
