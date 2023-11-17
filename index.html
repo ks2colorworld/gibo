@@ -446,12 +446,20 @@
       // 0 -> b -> w -> 0 순서로 바뀜
       if (e.target != document.querySelector('.board2')){
         if (e.target.classList.contains('w')){
+          // 백돌 숫자 확인 후 중간 숫자는 무시
+          if (arr[e.target.dataset.id][1] !== whiteCount) {
+            return;
+          }
           e.target.classList.remove('w')
           whiteCount -= 1;
           e.target.innerHTML = '';
           arr[e.target.dataset.id] = [0,0];
         }
         else if (e.target.classList.contains('b')){
+          // 흑돌 숫자 확인 후 중간 숫자는 무시
+          if (arr[e.target.dataset.id][1] !== blackCount) {
+            return;
+          }
           e.target.classList.remove('b')
           blackCount -= 1;
           // 흑돌 백돌 자동 전환되므로 흑돌도 없어짐
