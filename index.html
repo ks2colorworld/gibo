@@ -454,10 +454,9 @@
         else if (e.target.classList.contains('b')){
           e.target.classList.remove('b')
           blackCount -= 1;
-          e.target.classList.add('w')
-          whiteCount += 1;
-          e.target.innerHTML = whiteCount;
-          arr[e.target.dataset.id] = ['w',whiteCount]
+          // 흑돌 백돌 자동 전환되므로 흑돌도 없어짐
+          e.target.innerHTML = '';
+          arr[e.target.dataset.id] = [0,0];
         } else {
           // 흑돌이 놓인 후 백돌 놓여짐
           if (whiteCount < blackCount) {
