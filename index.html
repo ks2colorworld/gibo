@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>기보 작성 및 공유</title>
 </head>
 <body style="background: #fff0db">
 
@@ -420,7 +420,7 @@
   </textarea>
 </div>
 
-  <button>리셋</button>
+  <button>리셋</button> <button onclick="redirectToGitHub()">문의하기(깃허브-이슈등록)</button>
   <script>
     
     // var arr = Array(19).fill(0).map(x => Array(19).fill(0))
@@ -486,6 +486,11 @@
       return decodeURIComponent(escape(atob(str)));
     }
 
+    function redirectToGitHub() {
+      // 문의하기 버튼 동작 코드
+      window.open('https://github.com/ks2colorworld/gibo/issues', '_blank');
+    }
+
     document.querySelector('.memo').addEventListener('input', function(e) {
       var memoValue = e.target.value;
       // console.log("Memo value changed:", memoValue);
@@ -497,7 +502,6 @@
       myParam2 = save2;
       window.history.pushState({}, null, '?b=' + save2 + '&a=' + save);
     });
-
 
 
 
