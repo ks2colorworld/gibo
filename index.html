@@ -62,9 +62,19 @@
       border-radius: 50%;
       color: black;
     }
-    
+      
+    .container {
+      display: flex;
+      gap: 60px;
+    }
+
+    .memo {
+      margin-top: 10px; /* 추가된 부분 */
+      margin-right: 10px;
+    }
   </style>
   
+<div class="container">
   <div class="board">
     <div></div> <!--1-->
     <div></div>
@@ -399,25 +409,42 @@
     
   </div>
 
-  <button>리셋</button>
 
+  <textarea class="memo" rows="4" cols="50">
+백기사명: 
+흑기사명: 
+대국명칭: 
+대국결과: 
+대국날짜: 
+기타사항: 
+  </textarea>
+</div>
+
+  <button>리셋</button>
   <script>
     
     // var arr = Array(19).fill(0).map(x => Array(19).fill(0))
     var arr = Array(19 * 19).fill([0,0])
     var blackCount = 0;
     var whiteCount = 0;
+    var memoString = 
+`백기사명: 
+흑기사명: 
+대국명칭: 
+대국결과: 
+대국날짜: 
+기타사항: `;
 
     //로드시 url 가져오기 
     const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('a');
+    let myParam = urlParams.get('a');
     // url에 뭐가 있으면
     if (myParam != null) {
       blackCount = 0;
       whiteCount = 0;
       let 저장된어레이 = JSON.parse(atob(myParam));
       arr = [...저장된어레이]
-      console.log(저장된어레이);
+      // console.log(저장된어레이);
 
       for (let i = 0; i < 19 * 19; i++) {
         if (arr[i][0] === 0) {
@@ -430,7 +457,7 @@
         } else if (arr[i][0] === 'w') {
           whiteCount += 1;
         }
-        console.log(blackCount, whiteCount);
+        // console.log(blackCount, whiteCount);
       }
 
       //url에 뭐가 없으면
@@ -439,7 +466,40 @@
         document.querySelector('.board2').insertAdjacentHTML('beforeend',`<div data-id="${i}"></div>`)
       }
     }
+
+    let myParam2 = urlParams.get('b');
+    console.log(myParam2);
+    // url에 뭐가 있으면
+    if (myParam2 !== 'null' && myParam2 != null) {
+      let 저장된메모 = JSON.parse(customAtob(myParam2));
+      console.log(저장된메모);
+      document.querySelector('.memo').value = 저장된메모;
+    } else {
+      document.querySelector('.memo').value = memoString;
+    }
     
+    function customBtoa(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function customAtob(str) {
+      return decodeURIComponent(escape(atob(str)));
+    }
+
+    document.querySelector('.memo').addEventListener('input', function(e) {
+      var memoValue = e.target.value;
+      // console.log("Memo value changed:", memoValue);
+
+      //save to url
+      let save = myParam;
+      //save to memo
+      let save2 = customBtoa(JSON.stringify(memoValue));
+      myParam2 = save2;
+      window.history.pushState({}, null, '?b=' + save2 + '&a=' + save);
+    });
+
+
+
 
     document.querySelector('.board2').addEventListener('click', function(e){
 
@@ -482,7 +542,12 @@
 
         //save to url
         let save = btoa(JSON.stringify(arr));
-        window.history.pushState({}, null, '?a=' + save);
+        myParam = save;
+        //save to memo
+        // let save2 = customBtoa(JSON.stringify(document.querySelector('.memo').value));
+        let save2 = myParam2;
+        window.history.pushState({}, null, '?a=' + save + '&b=' + save2);
+        // window.history.pushState({}, null, '?b=' + save2);
         
       }
     })
@@ -498,8 +563,16 @@
       for (let i = 0; i < 19 * 19; i++) {
         document.querySelector('.board2').insertAdjacentHTML('beforeend',`<div data-id="${i}"></div>`)
       }
+      document.querySelector('.memo').value = memoString;
+
       let save = btoa(JSON.stringify(arr));
-        window.history.pushState({}, null, '?a=' + save);
+      myParam = save;
+        // window.history.pushState({}, null, '?a=' + save);
+      let save2 = customBtoa(JSON.stringify(memoString));
+      myParam2 = save2;
+      // window.history.pushState({}, null, '?b=' + save2);
+      console.log(memoString);
+        window.history.pushState({}, null, '?a=' + save + '&b=' + save2);
     })
     
 
