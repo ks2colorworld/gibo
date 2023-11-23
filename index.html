@@ -425,7 +425,9 @@
   </textarea>
 </div>
 
-  <button>리셋</button> <button onclick="redirectToGitHub()">문의하기(깃허브-이슈등록)</button>
+  <button>리셋</button> 
+  <button onclick="redirectToGitHub()">문의하기(깃허브-이슈등록)</button> 
+  <button class="copy-button" onclick="copyToClipboard()">공유하기(url복사)</button>
   <script>
     
     // var arr = Array(19).fill(0).map(x => Array(19).fill(0))
@@ -494,6 +496,25 @@
     function redirectToGitHub() {
       // 문의하기 버튼 동작 코드
       window.open('https://github.com/ks2colorworld/gibo/issues', '_blank');
+    }
+
+    function copyToClipboard() {
+      var copyText = window.location.href;
+      var copyButton = document.querySelector('.copy-button');
+
+      // 텍스트를 클립보드에 복사
+      navigator.clipboard.writeText(copyText).then(function() {
+        console.log('URL 복사 완료');
+        // 버튼 라벨 변경
+        copyButton.innerHTML = 'URL 복사 완료';
+
+        // 5초 후에 버튼 라벨 원래대로 변경
+        setTimeout(function() {
+          copyButton.innerHTML = '공유하기(url복사)';
+        }, 5000);
+      }).catch(function(err) {
+        console.error('클립보드 복사 실패: ', err);
+      });
     }
 
     document.querySelector('.memo').addEventListener('input', function(e) {
